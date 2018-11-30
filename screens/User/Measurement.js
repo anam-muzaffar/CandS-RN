@@ -128,7 +128,9 @@ export default class Measurement extends React.Component {
 <Text style={styles.sidetext}>Note* All measurements are kept in inches</Text>
 <Button
 title="Submit"
-color="#DAA520" />
+color="#DAA520"
+onPress={() => this.props.navigation.goBack()}
+/>
 
 </ScrollView>
 </ImageBackground>

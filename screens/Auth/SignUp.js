@@ -40,12 +40,12 @@ export default class SignUp extends React.Component {
   <View style={{paddingTop:50}} />
 
   <Button
-    title="Sign me Up!"
+    title="Sign Up"
     color="#DAA520"
     onPress={() => this.props.navigation.goBack()}
 />
 
-  <View style={{paddingTop:200}} />
+  <View style={{paddingTop:150}} />
 
   <Button
     title="Back to Home"

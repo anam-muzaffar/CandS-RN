@@ -98,7 +98,9 @@ secureTextEntry={true}
 <View style={styles.sidebox}>
 <Button
 title="Update"
-color="#DAA520" />
+color="#DAA520"
+onPress={() => this.props.navigation.goBack()}
+/>
 </View>
 <View style={styles.sidebox}>
 <TextInput style={styles.passchange}
@@ -114,7 +116,9 @@ secureTextEntry={true}
 <Button
 title="Sign out"
 onPress={this.onSignoutPress}
-color="#DAA520" />
+color="#DAA520"
+onPress={() => this.props.navigation.navigate('Login')}
+/>
 
 </ScrollView>
 </ImageBackground>
