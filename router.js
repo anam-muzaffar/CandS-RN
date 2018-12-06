@@ -56,7 +56,7 @@ export const AdminStack = createStackNavigator({
     screen:Images
   }
 }, {
-  initialRouteName: 'Images',
+  initialRouteName: 'AdminHome',
   navigationOptions: { header: null,}
 });
 
