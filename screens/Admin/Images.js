@@ -8,12 +8,6 @@ export default class Images extends Component {
         this.state = {
             images: [
                 { text: "Add Image", uri: "" },
-                { text: "Add Image", uri: "" },
-                { text: "Add Image", uri: "" },
-                { text: "Add Image", uri: "" },
-                { text: "Add Image", uri: "" },
-                { text: "Add Image", uri: "" },
-
             ],
         }
 
