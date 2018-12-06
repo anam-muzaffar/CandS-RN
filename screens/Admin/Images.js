@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, Dimensions, Image, TouchableOpacity, ImageBackground, ActivityIndicator } from 'react-native';
+import { Text, View, FlatList, Dimensions, Image, TouchableOpacity, ImageBackground, ActivityIndicator, Modal } from 'react-native';
 import firebase from 'react-native-firebase';
 import ImagePicker from 'react-native-image-picker';
 const options = {
@@ -16,7 +16,9 @@ export default class Images extends Component {
             images: [
                 { text: "Add Image", uri: "" },
             ],
-            index: null
+            index: null,
+            showModal: false,
+            category: ''
         }
 
         firebase.database().ref("/images").on('value', (snap) => {
@@ -29,26 +31,34 @@ export default class Images extends Component {
             }
         })
     }
-    uploadImage = (index) => {
+    selectCategory = (category) => {
+        this.setState({ category, showModal: false }, () => {
+            this.uploadImage()
+        })
+    }
+    uploadImage = () => {
         ImagePicker.showImagePicker(options, (response) => {
             if (response.didCancel) {
                 console.log('User cancelled image picker');
+                this.setState({
+                    index: null,
+                });
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
-            } else {
                 this.setState({
-                    index,
+                    index: null,
                 });
-
+            } else {
+                let index = this.state.index
                 let date = new Date().getTime();
                 firebase.storage().ref(`/images/CandS${date}`).putFile(response.uri).then(() => {
                     firebase.storage().ref(`/images/CandS${date}`).getDownloadURL().then((url) => {
                         let oldArray = this.state.images.slice(0, -1);
                         if (oldArray.length) {
-                            oldArray.splice(index, 1, { uri: url })
+                            oldArray.splice(index, 1, { uri: url, category: this.state.category })
                         }
                         else {
-                            oldArray = [{ uri: url }]
+                            oldArray = [{ uri: url, category: this.state.category }]
                         }
                         firebase.database().ref('/images').set(
                             oldArray
@@ -77,14 +87,35 @@ export default class Images extends Component {
     render() {
         return (
             <ImageBackground source={require("../../assets/bckgrnd.png")} style={{ height }}>
-
+                <Modal transparent visible={this.state.showModal} onRequestClose={() => this.setState({ showModal: false, index: null })} >
+                    <TouchableOpacity onPress={() => this.setState({ showModal: false, index: null })} style={{ height, width, backgroundColor: "rgba(0,0,0,0.2)", justifyContent: "center", alignItems: "center" }} >
+                        <View style={{ height: height / 2, width: width / 1.1, justifyContent: "space-around", alignItems: "center", backgroundColor: "white" }} >
+                            <Text style={{ color: "black", fontSize: 17 }} >Choose a category</Text>
+                            <TouchableOpacity style={{ width: "100%", paddingLeft: 10, height: height / 14, justifyContent: "center", borderBottomColor: "lightgray", borderBottomWidth: 1 }} onPress={() => this.selectCategory('summer')} >
+                                <Text>Summer</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ width: "100%", paddingLeft: 10, height: height / 14, justifyContent: "center", borderBottomColor: "lightgray", borderBottomWidth: 1 }} onPress={() => this.selectCategory('winter')} >
+                                <Text>Winter</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ width: "100%", paddingLeft: 10, height: height / 14, justifyContent: "center", borderBottomColor: "lightgray", borderBottomWidth: 1 }} onPress={() => this.selectCategory('spring')} >
+                                <Text>Spring</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ width: "100%", paddingLeft: 10, height: height / 14, justifyContent: "center", borderBottomColor: "lightgray", borderBottomWidth: 1 }} onPress={() => this.selectCategory('autumn')} >
+                                <Text>Autumn</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ width: "100%", paddingLeft: 10, height: height / 14, justifyContent: "center", borderBottomColor: "lightgray", borderBottomWidth: 1 }} onPress={() => this.selectCategory('trending')} >
+                                <Text>Trending</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
+                </Modal>
                 <FlatList
                     keyExtractor={(item, index) => index.toString()}
                     data={this.state.images}
                     contentContainerStyle={{ justifyContent: "space-around", flexWrap: "wrap", width, flexDirection: "row" }}
                     renderItem={({ item, index }) => {
                         return (
-                            <TouchableOpacity onPress={() => this.uploadImage(index)} style={{ height: width / 2.5, width: width / 2.5, justifyContent: "space-between", alignItems: "center", margin: 10 }} >
+                            <TouchableOpacity onPress={() => this.setState({ showModal: true, index })} style={{ height: width / 2.5, width: width / 2.5, justifyContent: "space-between", alignItems: "center", margin: 10 }} >
                                 <View style={{ height: width / 3, width: width / 3, borderWidth: 2, borderColor: "white", justifyContent: "center", alignItems: "center", }} >
 
                                     {(this.state.index == index) ? <ActivityIndicator color="#DAA520" size="small" /> :
