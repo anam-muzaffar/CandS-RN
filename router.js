@@ -11,6 +11,7 @@ import AdminHome from './screens/Admin/AdminHome';
 import AdminAccount from './screens/Admin/AdminAccount';
 import Orders from './screens/Admin/Orders';
 import UpdateDesigns from './screens/Admin/UpdateDesigns';
+import Images from './screens/Admin/Images';
 //User
 import Home from './screens/User/Home';
 import Design from './screens/User/Design';
@@ -51,8 +52,11 @@ export const AdminStack = createStackNavigator({
   UpdateDesigns: {
     screen: UpdateDesigns,
   },
+  Images:{
+    screen:Images
+  }
 }, {
-  initialRouteName: 'AdminHome',
+  initialRouteName: 'Images',
   navigationOptions: { header: null,}
 });
 

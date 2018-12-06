@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "169824144675",
+    "firebase_url": "https://cands-71015.firebaseio.com",
+    "project_id": "cands-71015",
+    "storage_bucket": "cands-71015.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169824144675:android:a2ed12ff876da073",
+        "android_client_info": {
+          "package_name": "com.acands"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "169824144675-tqrb8t76lfnpo69tlefh6cljg3c31f1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeauO33dn6JFfRHz7-VjpqqoBi7zzqD08"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
