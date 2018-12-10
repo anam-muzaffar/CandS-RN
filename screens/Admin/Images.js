@@ -6,6 +6,7 @@ const options = {
     title: 'Select Image',
     storageOptions: {
         path: 'images',
+        quality:0.1
     },
 };
 const { width, height } = Dimensions.get('window');
@@ -36,6 +37,31 @@ export default class Images extends Component {
             this.uploadImage()
         })
     }
+    deleteImage = (imageUrl,index)=>{
+        let imageName = imageUrl.split("images%2F")[1].split("?")[0]
+        firebase.storage().ref(`/images/${imageName}`).delete().then(()=>{
+            let oldArray = this.state.images.slice(0, -1);
+            // if (oldArray.length) {
+                oldArray.splice(index, 1)
+            // }
+            // else {
+            //     // oldArray = [{ uri: url, category: this.state.category }]
+            // }
+            firebase.database().ref('/images').set(
+                oldArray
+            ).then(() => {
+                this.setState({
+                    index: null,
+                });
+            }).catch(() => {
+                this.setState({
+                    index: null
+                })
+            })
+        })
+
+    }
+
     uploadImage = () => {
         ImagePicker.showImagePicker(options, (response) => {
             if (response.didCancel) {
@@ -55,10 +81,10 @@ export default class Images extends Component {
                     firebase.storage().ref(`/images/CandS${date}`).getDownloadURL().then((url) => {
                         let oldArray = this.state.images.slice(0, -1);
                         if (oldArray.length) {
-                            oldArray.splice(index, 1, { uri: url, category: this.state.category })
+                            oldArray.splice(index, 1, { uri: url, category: this.state.category,name:date })
                         }
                         else {
-                            oldArray = [{ uri: url, category: this.state.category }]
+                            oldArray = [{ uri: url, category: this.state.category,name:date }]
                         }
                         firebase.database().ref('/images').set(
                             oldArray
@@ -116,6 +142,17 @@ export default class Images extends Component {
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity onPress={() => this.setState({ showModal: true, index })} style={{ height: width / 2.5, width: width / 2.5, justifyContent: "space-between", alignItems: "center", margin: 10 }} >
+                               {index!== this.state.images.length-1? <View style={{position:"absolute",alignSelf:"flex-end",zIndex:100,top:-15}} >
+                                <TouchableOpacity onPress={()=>{
+                                    this.deleteImage(item.uri,index)
+                                }} style={{height:width/8,width:width/8,}} >
+                                <Image
+                                source={require("../../assets/closeIcon.png")}
+                                style={{height:"100%",width:"100%"}}
+                                resizeMode="contain"
+                                />
+                                </TouchableOpacity>
+                                </View>:<View/>}
                                 <View style={{ height: width / 3, width: width / 3, borderWidth: 2, borderColor: "white", justifyContent: "center", alignItems: "center", }} >
 
                                     {(this.state.index == index) ? <ActivityIndicator color="#DAA520" size="small" /> :
