@@ -8,6 +8,7 @@ exports.sendNotification = functions.https.onRequest((request, response) => {
         notification: {
             title: request.body.title,
             body: request.body.message,
+            order:request.body.order
         }
     }
     admin.messaging().sendToDevice(request.body.token, payload);

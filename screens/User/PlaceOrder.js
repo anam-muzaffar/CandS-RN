@@ -1,31 +1,131 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, TextInput, ImageBackground, Button } from 'react-native';
+import { Platform, StyleSheet, Text, View, TextInput, ImageBackground, Button, Image } from 'react-native';
 import firebase from 'react-native-firebase';
+import ImagePicker from 'react-native-image-picker';
 
+const options = {
+  title: 'Select Image',
+  storageOptions: {
+    path: 'images',
+    quality: 0.1
+  },
+};
 
+export default class PlaceOrder extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      photo: null,
+      info: "",
+      measurements: {},
 
-export default class PlaceOrder extends Component<Props> {
+    }
+  }
+  selectDesign = (image) => {
+    if (image) {
+      // alert(image)
+      this.setState({ photo: image })
+    }
+    else {
+      ImagePicker.showImagePicker(options, (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else {
+          console.log(response)
+          this.setState({ photo: response.uri })
+        }
+      });
+    }
+  }
+  measurements = (userMeasurements) => {
+    this.setState({ measurements: userMeasurements })
+  }
+  checkImage = (image) => {
+    if (image.indexOf("firebasestorage") != -1) {
+      this.uploadDataAndSendNotification(image)
+    }
+    else {
+      let date = new Date().getTime();
+      firebase.storage().ref(`/images/CandS${date}`).putFile(image).then(() => {
+        firebase.storage().ref(`/images/CandS${date}`).getDownloadURL().then((url) => {
+          this.uploadDataAndSendNotification(url)
+        }).catch((aa) => { })
+      }).catch((a) => { })
+    }
+  }
+  uploadDataAndSendNotification = (image) => {
+    // let { info, measurements } = this.state;
+    let { photo, info, measurements } = this.state;
+
+    firebase.database().ref("/orders").push({
+      info,
+      photo: image,
+      measurements,
+      orderBy: firebase.auth().currentUser.email,
+      accepted: false,
+      rejected: false
+    }).then(() => {
+
+      let tokens = []
+      firebase.database().ref('/users').once("value", (snap) => {
+        let data = snap.val();
+        let users = Object.values(data);
+        users.filter((user) => user.accountType == 'admin').map((admin) => {
+          tokens.push(admin.notificationToken);
+        })
+      }).then(() => {
+        fetch("https://us-central1-cands-71015.cloudfunctions.net/sendNotification", {
+          method: "POST",
+          body: JSON.stringify({
+            title: "New Order",
+            message: `You have recieved a new order from ${firebase.auth().currentUser.email}`,
+            token: tokens,
+            order: {
+              info,
+              photo: image,
+              measurements,
+              orderBy: firebase.auth().currentUser.email,
+              accepted: false,
+              rejected: false
+            }
+          }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+
+        }).then((res) => {
+          this.props.navigation.goBack()
+
+        }).catch((err) => {
+        })
+      }).catch((err) => {
+      })
+    })
+  }
   render() {
     return (
       <ImageBackground source={require("../../assets/bckgrnd.png")} style={{ flex: 1 }}>
         <View style={styles.page}>
           <Text style={styles.Contact}> ORDER HERE </Text>
-          <View style={{ paddingTop: 35 }} />
+          <View style={{ paddingTop: 25 }} />
 
           <Button
-            title="View Designs"
+            title={`Select Designs   ${this.state.photo ? "" : "(Required)"}`}
             color="#DAA520"
             textAlign="center"
-            onPress={() => this.props.navigation.navigate('Design')}
+
+            onPress={() => this.props.navigation.navigate('Design', { selectDesign: this.selectDesign })}
           />
 
           <View style={{ paddingTop: 40 }} />
 
           <Button
-            title="Fulfill Measurements"
+            title={`Fulfill Measurements   ${Object.keys(this.state.measurements).length == 12 ? "" : "(Required)"}`}
             color="#DAA520"
             textAlign="center"
-            onPress={() => this.props.navigation.navigate('Measurement')}
+            onPress={() => this.props.navigation.navigate('Measurement', { measurements: this.measurements, userMeasurements: this.state.measurements })}
           />
 
           <View style={{ paddingTop: 40 }} />
@@ -35,45 +135,38 @@ export default class PlaceOrder extends Component<Props> {
           <TextInput style={styles.messagebox}
             multiline={true}
             numberOfLines={7}
+            onChangeText={(info) => this.setState({ info })}
           />
+          <View style={{ paddingTop: 10 }} />
 
+          <Image
+            source={{ uri: this.state.photo }}
+            style={{ height: 50, width: 50 }}
+          />
           <View style={{ paddingTop: 30 }} />
 
           <Button
             title="Submit Order"
             color="#DAA520"
+
             textAlign="center"
+            disabled={!(this.state.photo
+              && (Object.keys(this.state.measurements).length == 12)
+            )
+            }
             onPress={() => {
-              let tokens = []
-              firebase.database().ref('/users').once("value", (snap) => {
-                let data = snap.val();
-                let users = Object.values(data);
-                users.filter((user) => user.accountType == 'admin').map((admin) => {
-                  tokens.push(admin.notificationToken);
-                })
-              }).then(() => {
-
-                fetch("https://us-central1-cands-71015.cloudfunctions.net/sendNotification", {
-                  method: "POST",
-                  body: JSON.stringify({
-                    title: "New Order",
-                    message: `You have recieved a new order from ${firebase.auth().currentUser.email}`,
-                    token: tokens
-                  }),
-                  headers: {
-                    "Content-Type": "application/json"
-                  }
-
-                }).then((res) => {
-                  this.props.navigation.goBack()
-
-                }).catch((err) => {
-                })
-              }).catch((err) => {
-              })
+              this.checkImage(this.state.photo)
             }}
           />
 
+
+          <View style={{ paddingTop: 30 }} />
+          <Button
+            title="Custom Image"
+            color="#DAA520"
+            textAlign="center"
+            onPress={() => this.selectDesign()}
+          />
           <View style={{ paddingTop: 30 }} />
 
           <Button
@@ -112,7 +205,7 @@ const styles = StyleSheet.create({
   },
   page: {
     flex: 1,
-    paddingTop: 50
+    paddingTop: 5
   },
   line: {
     fontSize: 15,

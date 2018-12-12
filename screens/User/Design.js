@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Image, StyleSheet, Text, View, TextInput, Button, Linking, Alert, ImageBackground, Dimensions } from 'react-native';
+import { ScrollView, Image, StyleSheet, Text, View, TextInput, Button, Linking, Alert, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
 import Carousel from 'react-native-looped-carousel';
 import firebase from 'react-native-firebase';
 const { width, height } = Dimensions.get('window');
@@ -60,13 +60,16 @@ export default class Home extends React.Component {
                     >
                         {this.state.summerArray.length ? this.state.summerArray.map((image, index) => {
                             return (
-                                <View>
+                                <TouchableOpacity onPress={() => {
+                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
+                                    this.props.navigation.goBack()
+                                }} >
                                     <Image
                                         style={this.state.size}
                                         source={{ uri: image.uri }}
                                     />
                                     <Text>{index + 1}</Text>
-                                </View>
+                                </TouchableOpacity>
                             )
                         }) : <View />}
                         {/* <View>
@@ -132,13 +135,16 @@ export default class Home extends React.Component {
                     >
                         {this.state.winterArray.length ? this.state.winterArray.map((image, index) => {
                             return (
-                                <View>
+                                <TouchableOpacity onPress={() => {
+                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
+                                    this.props.navigation.goBack()
+                                }} >
                                     <Image
                                         style={this.state.size}
                                         source={{ uri: image.uri }}
                                     />
                                     <Text>{index + 1}</Text>
-                                </View>
+                                </TouchableOpacity>
                             )
                         }) : <View />}
                         {/* <View>
@@ -204,13 +210,16 @@ export default class Home extends React.Component {
                     >
                         {this.state.springArray.length ? this.state.springArray.map((image, index) => {
                             return (
-                                <View>
+                                <TouchableOpacity onPress={() => {
+                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
+                                    this.props.navigation.goBack()
+                                }} >
                                     <Image
                                         style={this.state.size}
                                         source={{ uri: image.uri }}
                                     />
                                     <Text>{index + 1}</Text>
-                                </View>
+                                </TouchableOpacity>
                             )
                         }) : <View />}
                         {/* <View>
@@ -277,13 +286,16 @@ export default class Home extends React.Component {
                     >
                         {this.state.autumnArray.length ? this.state.autumnArray.map((image, index) => {
                             return (
-                                <View>
+                                <TouchableOpacity onPress={() => {
+                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
+                                    this.props.navigation.goBack()
+                                }} >
                                     <Image
                                         style={this.state.size}
                                         source={{ uri: image.uri }}
                                     />
                                     <Text>{index + 1}</Text>
-                                </View>
+                                </TouchableOpacity>
                             )
                         }) : <View />}
 
