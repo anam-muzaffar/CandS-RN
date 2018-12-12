@@ -66,8 +66,10 @@ export default class PlaceOrder extends Component {
       orderBy: firebase.auth().currentUser.email,
       accepted: false,
       rejected: false
-    }).then(() => {
-
+    }).then((response) => {
+      // alert(response)
+      // console.log(response.key)
+      firebase.database().ref(`/orders/${response.key}/`).update({key:response.key})
       let tokens = []
       firebase.database().ref('/users').once("value", (snap) => {
         let data = snap.val();
@@ -88,7 +90,8 @@ export default class PlaceOrder extends Component {
               measurements,
               orderBy: firebase.auth().currentUser.email,
               accepted: false,
-              rejected: false
+              rejected: false,
+              key:response.key
             }
           }),
           headers: {

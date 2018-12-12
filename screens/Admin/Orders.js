@@ -6,25 +6,130 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View, ImageBackground, FlatList, Dimensions, TouchableOpacity, Modal, Image } from 'react-native';
+import firebase from 'react-native-firebase';
+const { width, height } = Dimensions.get('window');
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
-type Props = {};
-export default class Orders extends Component<Props> {
+export default class Orders extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      orders: {},
+      visible: false,
+      order: { measurements: {} }
+    }
+  }
+  componentDidMount() {
+    firebase.database().ref("/orders").on("value", (snap) => {
+      let data = snap.val();
+      if (data) {
+        // alert(data)
+        this.setState({ orders: data })
+      }
+      else {
+        this.setState({ orders: {} })
+      }
+    })
+    if (this.props.navigation.state.params && this.props.navigation.state.params) {
+
+    }
+  }
   render() {
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
+      <ImageBackground source={require("../../assets/bckgrnd.png")} style={styles.container}>
+        <Modal onRequestClose={() => {
+          this.setState({
+            visible: false,
+            order: {}
+          })
+        }} visible={this.state.visible} >
+          <ImageBackground source={require("../../assets/bckgrnd.png")} style={{ flex: 1, justifyContent: "space-around" }}>
+            <View style={{ height: width / 1.8, width }} >
+              <Image
+                source={{ uri: this.state.order.photo }}
+                style={{ height: "100%", width: "100%" }}
+              />
+            </View>
+            <Text style={{ color: "white", paddingLeft: 5, fontSize: 18 }} >Measurements</Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-around", flexWrap: "wrap", height: width / 2.2 }}  >
+              {
+                Object.values(this.state.order.measurements || {}).map((measurement, index) => {
+                  let property = Object.keys(this.state.order.measurements || {})[index]
+                  return (
+                    <View style={{ width: 150, marginTop: 5 }} >
+                      <Text style={{ color: "white" }} >{property}: {measurement}</Text>
+                    </View>
+                  )
+                })
+              }
+
+            </View>
+            <View style={{ height: width / 2, marginBottom: 10, padding: 10 }} >
+              <Text style={{ color: "white", fontSize: 18 }} >Info</Text>
+              <Text style={{ color: "white", }} >{this.state.order.info}</Text>
+            </View>
+            {!(this.state.order && this.state.order.accepted) && !(this.state.order && this.state.order.rejected) ?
+              <View style={{ position: "absolute", bottom: 0, flexDirection: "row", width, height: height / 13 }} >
+                <TouchableOpacity
+                  onPress={() => {
+                    firebase.database().ref(`orders/${this.state.order.key}/`).update({ accepted: true })
+                    this.setState({
+                      order: { ...this.state.order, accepted: true }
+                    })
+                  }}
+                  style={{ backgroundColor: "green", flex: 1, justifyContent: "center", alignItems: "center", height: "100%" }} >
+                  <Text style={{ color: "white" }} >Accept</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    firebase.database().ref(`orders/${this.state.order.key}/`).update({ rejected: true })
+                    this.setState({
+                      order: { ...this.state.order, rejected: true }
+                    })
+                  }}
+                  style={{ backgroundColor: "red", flex: 1, justifyContent: "center", alignItems: "center", height: "100%" }} >
+                  <Text style={{ color: "white" }} >Reject</Text>
+
+                </TouchableOpacity>
+              </View> : <View style={{ position: "absolute", bottom: 0, flexDirection: "row", width, height: height / 13 }} >
+                {this.state.order && this.state.order.accepted ? <View
+                  style={{ backgroundColor: "green", flex: 1, justifyContent: "center", alignItems: "center", height: "100%" }} >
+                  <Text style={{ color: "white" }} >Accepted</Text>
+                </View> : <View />}
+                {this.state.order && this.state.order.rejected ? <View
+                  style={{ backgroundColor: "red", flex: 1, justifyContent: "center", alignItems: "center", height: "100%" }} >
+                  <Text style={{ color: "white" }} >Rejected</Text>
+                </View> : <View />}
+
+              </View>
+            }
+
+          </ImageBackground>
+        </Modal>
+        <Text style={{color:"white",fontSize:25,marginVertical:30,}} >Orders Recieved</Text>
+        <FlatList
+          keyExtractor={(item, index) => index.toString()}
+          data={Object.values(this.state.orders)}
+          contentContainerStyle={{ height }}
+
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity onPress={() => {
+                this.setState({
+                  visible: true,
+                  order: item
+                })
+              }} style={{ width: width / 1.1, height: height / 14, backgroundColor: "white", marginTop: 15, justifyContent: "center", padding: 10 }} >
+                <Text>Order By: {item.orderBy}</Text>
+              </TouchableOpacity>
+            )
+          }}
+        />
+      </ImageBackground>
     );
   }
 }
@@ -34,7 +139,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
   welcome: {
     fontSize: 20,
