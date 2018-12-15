@@ -18,8 +18,14 @@ export default class PlaceOrder extends Component {
       photo: null,
       info: "",
       measurements: {},
-
+      user: {}
     }
+
+    firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).once('value', (snap) => {
+      let data = snap.val();
+      if (data)
+        this.setState({ user: { ...data, id: firebase.auth().currentUser.uid } });
+    })
   }
   selectDesign = (image) => {
     if (image) {
@@ -65,11 +71,13 @@ export default class PlaceOrder extends Component {
       measurements,
       orderBy: firebase.auth().currentUser.email,
       accepted: false,
-      rejected: false
+      rejected: false,
+      user: this.state.user
+
     }).then((response) => {
       // alert(response)
       // console.log(response.key)
-      firebase.database().ref(`/orders/${response.key}/`).update({key:response.key})
+      firebase.database().ref(`/orders/${response.key}/`).update({ key: response.key })
       let tokens = []
       firebase.database().ref('/users').once("value", (snap) => {
         let data = snap.val();
@@ -87,12 +95,13 @@ export default class PlaceOrder extends Component {
             order: {
               info,
               photo: image,
-              measurements,
+              measurements: JSON.stringify(measurements),
               orderBy: firebase.auth().currentUser.email,
-              accepted: false,
-              rejected: false,
-              key:response.key
-            }
+              accepted: "false",
+              rejected: "false",
+              key: response.key
+            },
+            user: this.state.user
           }),
           headers: {
             "Content-Type": "application/json"

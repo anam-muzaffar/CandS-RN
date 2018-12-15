@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ImageBackground, Button, TextInput } from 'react-native';
+import { Text, View, StyleSheet, ImageBackground, Button, TextInput, ScrollView } from 'react-native';
 import firebase from 'react-native-firebase';
 
 
@@ -9,22 +9,43 @@ export default class SignUp extends React.Component {
     this.state = {
       email: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      name: "",
+      number: ""
     }
   }
 
   signup = () => {
-    let { email, password, confirmPassword } = this.state;
-    if (email && password && confirmPassword) {
+    let { email, password, confirmPassword, name, number } = this.state;
+    if (email && password && confirmPassword && name, number) {
       if (password == confirmPassword) {
-        firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
-          firebase.database().ref(`/users/${user.user.uid}/`).set({
-            email,
-            accountType:"user"
-          }).then(() => {
-            this.props.navigation.navigate('User')
 
+        firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+          firebase.messaging().hasPermission().then((permission) => {
+            if (permission) {
+              firebase.messaging().getToken().then((token) => {
+                firebase.database().ref(`/users/${user.user.uid}/`).set({
+                  email,
+                  accountType: "user",
+                  name,
+                  number,
+                  notificationToken: token
+                }).then(() => {
+                  this.props.navigation.navigate('User')
+                }).catch((err) => {
+                  alert(err)
+                })
+
+              }).catch((err) => {
+                alert(err)
+              })
+            }
+          }).catch((err) => {
+            alert(err)
           })
+
+        }).catch((err) => {
+          alert(err)
         })
       }
       else {
@@ -39,56 +60,81 @@ export default class SignUp extends React.Component {
   render() {
     return (
       <ImageBackground source={require("../../assets/bckgrnd.png")} style={{ flex: 1 }}>
-        <View style={styles.page}>
+        <ScrollView>
 
 
-          <Text style={styles.title}>CandS</Text>
-          <Text style={styles.subheading}> Crafting and Stitching</Text>
+          <View style={styles.page}>
 
-          <View style={{ paddingTop: 50 }} />
 
-          <TextInput style={styles.inputbox}
-            placeholder="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-            onChangeText={(email) => this.setState({ email })}
-          />
+            <Text style={styles.title}>CandS</Text>
+            <Text style={styles.subheading}> Crafting and Stitching</Text>
 
-          <View style={{ paddingTop: 20 }} />
+            <View style={{ paddingTop: 50 }} />
+            <TextInput style={styles.inputbox}
+              placeholder="Full Name"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholderTextColor="#c4c633"
+              onChangeText={(name) => this.setState({ name })}
+            />
 
-          <TextInput style={styles.inputbox}
-            placeholder="Password"
-            autoCapitalize="none"
-            autoCorrect={false}
-            onChangeText={(password) => this.setState({ password })}
-          />
+            <View style={{ paddingTop: 20 }} />
+            <TextInput style={styles.inputbox}
+              placeholder="Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholderTextColor="#c4c633"
+              onChangeText={(email) => this.setState({ email })}
+            />
 
-          <View style={{ paddingTop: 20 }} />
+            <View style={{ paddingTop: 20 }} />
+            <TextInput style={styles.inputbox}
+              placeholder="Phone Number"
+              keyboardType="number-pad"
+              placeholderTextColor="#c4c633"
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={(number) => this.setState({ number })}
+            />
 
-          <TextInput style={styles.inputbox}
-            placeholder="Confirm Password"
-            autoCapitalize="none"
-            autoCorrect={false}
-            onChangeText={(confirmPassword) => this.setState({ confirmPassword })}
-          />
+            <View style={{ paddingTop: 20 }} />
 
-          <View style={{ paddingTop: 50 }} />
+            <TextInput style={styles.inputbox}
+              placeholder="Password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholderTextColor="#c4c633"
+              onChangeText={(password) => this.setState({ password })}
+            />
 
-          <Button
-            title="Sign Up"
-            color="#DAA520"
-            onPress={() => this.signup()}
-          />
+            <View style={{ paddingTop: 20 }} />
 
-          <View style={{ paddingTop: 150 }} />
+            <TextInput style={styles.inputbox}
+              placeholder="Confirm Password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholderTextColor="#c4c633"
+              onChangeText={(confirmPassword) => this.setState({ confirmPassword })}
+            />
 
-          <Button
-            title="Back to Home"
-            color="#DAA520"
-            onPress={() => this.props.navigation.goBack()} />
+            <View style={{ paddingTop: 50 }} />
 
-        </View>
+            <Button
+              title="Sign Up"
+              color="#DAA520"
+              onPress={() => this.signup()}
+            />
+
+            <View style={{ paddingTop: 150 }} />
+
+            <Button
+              title="Back to Home"
+              color="#DAA520"
+              onPress={() => this.props.navigation.goBack()} />
+
+          </View>
+        </ScrollView>
       </ImageBackground>
     );
   }
@@ -97,7 +143,7 @@ export default class SignUp extends React.Component {
 const styles = StyleSheet.create({
   inputbox: {
     width: 350,
-    height: 35,
+    height: 40,
     borderWidth: 2,
     borderColor: 'grey',
     color: "#c4c633",
