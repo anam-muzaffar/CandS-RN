@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Button, View, Text } from 'react-native';
-import { createStackNavigator ,createSwitchNavigator} from 'react-navigation'; // Version can be specified in package.json
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation'; // Version can be specified in package.json
 //Auth
 import Login from './screens/Auth/Login';
 import SignUp from './screens/Auth/SignUp';
@@ -19,7 +19,7 @@ import ContactUs from './screens/User/ContactUs';
 import MyAccount from './screens/User/MyAccount';
 import PlaceOrder from './screens/User/PlaceOrder';
 import Measurement from './screens/User/Measurement';
-
+import MyOrders from './screens/User/MyOrders';
 export const AuthStack = createStackNavigator({
   Login: {
     screen: Login,
@@ -34,10 +34,10 @@ export const AuthStack = createStackNavigator({
     screen: ForgotPassword,
   },
 },
- {
-  initialRouteName: 'Login',
-  navigationOptions: { header: null,}
-});
+  {
+    initialRouteName: 'Login',
+    navigationOptions: { header: null, }
+  });
 
 export const AdminStack = createStackNavigator({
   AdminHome: {
@@ -52,13 +52,13 @@ export const AdminStack = createStackNavigator({
   UpdateDesigns: {
     screen: UpdateDesigns,
   },
-  Images:{
-    screen:Images
+  Images: {
+    screen: Images
   }
 }, {
-  initialRouteName: 'AdminHome',
-  navigationOptions: { header: null,}
-});
+    initialRouteName: 'AdminHome',
+    navigationOptions: { header: null, }
+  });
 
 export const UserStack = createStackNavigator({
   User: {
@@ -79,11 +79,14 @@ export const UserStack = createStackNavigator({
   PlaceOrder: {
     screen: PlaceOrder,
   },
+  MyOrders: {
+    screen: MyOrders
+  }
 },
- {
-  initialRouteName: 'User',
-  navigationOptions: { header: null,}
-});
+  {
+    initialRouteName: 'User',
+    navigationOptions: { header: null, }
+  });
 
 export const Router = createSwitchNavigator({
   Auth: {
@@ -99,7 +102,7 @@ export const Router = createSwitchNavigator({
     screen: ForgotPassword,
   },
 },
- {
-  initialRouteName: 'Auth',
-  navigationOptions: { header: null,}
-});
+  {
+    initialRouteName: 'Auth',
+    navigationOptions: { header: null, }
+  });

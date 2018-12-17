@@ -31,10 +31,10 @@ export default class Measurement extends React.Component {
 
           <View style={styles.grid}>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(chest) => this.setMeasurements({chest})} />
+              <TextInput value={this.state.userMeasurements.chest} keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(chest) => this.setMeasurements({chest})} />
             </View>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(ribs) => this.setMeasurements({ribs})} />
+              <TextInput value={this.state.userMeasurements.ribs} keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(ribs) => this.setMeasurements({ribs})} />
             </View>
           </View>
           <View style={{ paddingTop: 15 }} />
@@ -50,10 +50,10 @@ export default class Measurement extends React.Component {
 
           <View style={styles.grid}>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(waist) => this.setMeasurements({waist})} />
+              <TextInput keyboardType="numeric" value={this.state.userMeasurements.waist} maxLength={3} style={styles.inputbox} onChangeText={(waist) => this.setMeasurements({waist})} />
             </View>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox}  onChangeText={(waistToFloor) => this.setMeasurements({waistToFloor})} />
+              <TextInput keyboardType="numeric" value={this.state.userMeasurements.waistToFloor} maxLength={3} style={styles.inputbox}  onChangeText={(waistToFloor) => this.setMeasurements({waistToFloor})} />
             </View>
           </View>
           <View style={{ paddingTop: 15 }} />
@@ -69,10 +69,10 @@ export default class Measurement extends React.Component {
 
           <View style={styles.grid}>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(hips) => this.setMeasurements({hips})} />
+              <TextInput keyboardType="numeric" value={this.state.userMeasurements.hips} maxLength={3} style={styles.inputbox} onChangeText={(hips) => this.setMeasurements({hips})} />
             </View>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(neckToFloor) => this.setMeasurements({neckToFloor})} />
+              <TextInput keyboardType="numeric" value={this.state.userMeasurements.neckToFloor} maxLength={3} style={styles.inputbox} onChangeText={(neckToFloor) => this.setMeasurements({neckToFloor})} />
             </View>
           </View>
           <View style={{ paddingTop: 15 }} />
@@ -88,12 +88,12 @@ export default class Measurement extends React.Component {
 
           <View style={styles.grid}>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox}
+              <TextInput keyboardType="numeric" value={this.state.userMeasurements.biceps} maxLength={3} style={styles.inputbox}
                 onChangeText={(biceps) => this.setMeasurements({biceps})}
               />
             </View>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox}
+              <TextInput keyboardType="numeric" value={this.state.userMeasurements.shoulderToElbow} maxLength={3} style={styles.inputbox}
                 onChangeText={(shoulderToElbow) => this.setMeasurements({shoulderToElbow})}
               />
             </View>
@@ -111,10 +111,10 @@ export default class Measurement extends React.Component {
 
           <View style={styles.grid}>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(shoulderToWaist) => this.setMeasurements({shoulderToWaist})} />
+              <TextInput keyboardType="numeric" value={this.state.userMeasurements.shoulderToWaist} maxLength={3} style={styles.inputbox} onChangeText={(shoulderToWaist) => this.setMeasurements({shoulderToWaist})} />
             </View>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox}
+              <TextInput keyboardType="numeric" maxLength={3} value={this.state.userMeasurements.waistToKnee} style={styles.inputbox}
                 onChangeText={(waistToKnee) => this.setMeasurements({waistToKnee})}
               />
             </View>
@@ -132,10 +132,10 @@ export default class Measurement extends React.Component {
 
           <View style={styles.grid}>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(armpitToWaist) => this.setMeasurements({armpitToWaist})} />
+              <TextInput keyboardType="numeric" value={this.state.userMeasurements.armpitToWaist} maxLength={3} style={styles.inputbox} onChangeText={(armpitToWaist) => this.setMeasurements({armpitToWaist})} />
             </View>
             <View style={styles.sidebox}>
-              <TextInput keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(backneckToWaist) => this.setMeasurements({backneckToWaist})} />
+              <TextInput keyboardType="numeric" value={this.state.userMeasurements.backneckToWaist} maxLength={3} style={styles.inputbox} onChangeText={(backneckToWaist) => this.setMeasurements({backneckToWaist})} />
             </View>
           </View>
           <View style={{ paddingTop: 15 }} />

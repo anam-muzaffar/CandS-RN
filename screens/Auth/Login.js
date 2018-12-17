@@ -25,7 +25,7 @@ export default class Login extends React.Component {
   notificationListener = async () => {
     this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
       const { title, body } = notificationOpen.notification;
-      console.log(notificationOpen.notification)
+      // console.log(notificationOpen.notification)
       if (notificationOpen.notification.data.key) {
         firebase.database().ref(`/orders/${notificationOpen.notification.data.key}/`).once('value', (snap) => {
 
@@ -36,7 +36,7 @@ export default class Login extends React.Component {
     const notificationOpen = await firebase.notifications().getInitialNotification();
     if (notificationOpen) {
       const { title, body } = notificationOpen.notification;
-      console.log(notificationOpen.notification)
+      // console.log(notificationOpen.notification)
 
       if (notificationOpen.notification.data.key) {
         firebase.database().ref(`/orders/${notificationOpen.notification.data.key}/`).once('value', (snap) => {
@@ -99,6 +99,8 @@ export default class Login extends React.Component {
 
           }
         })
+      }).catch((err)=>{
+        alert(err)
       })
     }
     else {

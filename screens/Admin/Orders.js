@@ -105,6 +105,9 @@ export default class Orders extends Component {
                     this.setState({
                       order: { ...this.state.order, accepted: true }
                     })
+                    if (this.state.order.user)
+                      firebase.database().ref(`users/${this.state.order.user.id}/myorders/${this.state.order.key}`).update({ accepted: true })
+
                     this.sendNotificationToUser("accepted")
                   }}
                   style={{ backgroundColor: "green", flex: 1, justifyContent: "center", alignItems: "center", height: "100%" }} >
@@ -113,6 +116,9 @@ export default class Orders extends Component {
                 <TouchableOpacity
                   onPress={() => {
                     firebase.database().ref(`orders/${this.state.order.key}/`).update({ rejected: true })
+                    if (this.state.order.user)
+                      firebase.database().ref(`users/${this.state.order.user.id}/myorders/${this.state.order.key}`).update({ rejected: true })
+
                     this.setState({
                       order: { ...this.state.order, rejected: true }
                     })
@@ -123,10 +129,21 @@ export default class Orders extends Component {
 
                 </TouchableOpacity>
               </View> : <View style={{ position: "absolute", bottom: 0, flexDirection: "row", width, height: height / 13 }} >
-                {this.state.order && this.state.order.accepted ? <View
+                {this.state.order && this.state.order.accepted ? <TouchableOpacity
+                  onPress={() => {
+                    firebase.database().ref(`orders/${this.state.order.key}/`).update({ completed: true })
+                    if (this.state.order.user)
+                      firebase.database().ref(`users/${this.state.order.user.id}/myorders/${this.state.order.key}`).update({ completed: true })
+
+                    this.setState({
+                      order: { ...this.state.order, completed: true }
+                    })
+
+                    this.sendNotificationToUser("marked as completed")
+                  }}
                   style={{ backgroundColor: "green", flex: 1, justifyContent: "center", alignItems: "center", height: "100%" }} >
-                  <Text style={{ color: "white" }} >Accepted</Text>
-                </View> : <View />}
+                  <Text style={{ color: "white" }} >Complete</Text>
+                </TouchableOpacity> : <View />}
                 {this.state.order && this.state.order.rejected ? <View
                   style={{ backgroundColor: "red", flex: 1, justifyContent: "center", alignItems: "center", height: "100%" }} >
                   <Text style={{ color: "white" }} >Rejected</Text>

@@ -130,6 +130,14 @@ export default class Home extends React.Component {
 
                 />
               </View>
+              <View style={styles.sidebox}>
+                <Button
+                  title="My Orders"
+                  color="#DAA520"
+                  onPress={() => this.props.navigation.navigate('MyOrders')}
+
+                />
+              </View>
             </View>
             <View style={{ paddingTop: 55 }} />
             <Button

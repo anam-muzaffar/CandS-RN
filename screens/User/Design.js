@@ -8,7 +8,7 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            size: { width, height },
+            size: { height: height / 5, width },
             images: [],
             summerArray: [],
             winterArray: [],
@@ -54,6 +54,7 @@ export default class Home extends React.Component {
                     <Text style={{ color: 'yellow', textAlign: 'center', fontSize: 20 }}>Summer Season</Text>
                     <Carousel
                         //delay={3500}
+
                         style={this.state.size}
                     //autoplay
                     //pageInfo
@@ -63,10 +64,15 @@ export default class Home extends React.Component {
                                 <TouchableOpacity onPress={() => {
                                     this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
                                     this.props.navigation.goBack()
-                                }} >
+                                }}
+                                    style={this.state.size}
+                                >
                                     <Image
-                                        style={this.state.size}
+                                        style={{ height: "100%", width: "100%" }}
                                         source={{ uri: image.uri }}
+                                        // resizeMode="center"
+                                        resizeMode="cover"
+
                                     />
                                     <Text>{index + 1}</Text>
                                 </TouchableOpacity>
@@ -138,10 +144,14 @@ export default class Home extends React.Component {
                                 <TouchableOpacity onPress={() => {
                                     this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
                                     this.props.navigation.goBack()
-                                }} >
+                                }}
+                                    style={this.state.size}
+                                >
                                     <Image
-                                        style={this.state.size}
+                                        style={{ height: "100%", width: "100%" }}
                                         source={{ uri: image.uri }}
+
+                                        resizeMode="cover"
                                     />
                                     <Text>{index + 1}</Text>
                                 </TouchableOpacity>
@@ -213,10 +223,13 @@ export default class Home extends React.Component {
                                 <TouchableOpacity onPress={() => {
                                     this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
                                     this.props.navigation.goBack()
-                                }} >
+                                }}
+                                    style={this.state.size}
+                                >
                                     <Image
-                                        style={this.state.size}
+                                        style={{ height: "100%", width: "100%" }}
                                         source={{ uri: image.uri }}
+                                        resizeMode="cover"
                                     />
                                     <Text>{index + 1}</Text>
                                 </TouchableOpacity>
@@ -289,10 +302,13 @@ export default class Home extends React.Component {
                                 <TouchableOpacity onPress={() => {
                                     this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
                                     this.props.navigation.goBack()
-                                }} >
+                                }}
+                                    style={this.state.size}
+                                >
                                     <Image
-                                        style={this.state.size}
+                                        style={{ height: "100%", width: "100%" }}
                                         source={{ uri: image.uri }}
+                                        resizeMode="cover"
                                     />
                                     <Text>{index + 1}</Text>
                                 </TouchableOpacity>

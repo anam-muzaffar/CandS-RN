@@ -18,13 +18,23 @@ export default class PlaceOrder extends Component {
       photo: null,
       info: "",
       measurements: {},
-      user: {}
+      user: {},
+      orders: []
     }
 
     firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).once('value', (snap) => {
       let data = snap.val();
-      if (data)
+      if (data) {
         this.setState({ user: { ...data, id: firebase.auth().currentUser.uid } });
+        if (data.measurements) {
+          this.setState({ measurements: data.measurements })
+        }
+      }
+    })
+    firebase.database().ref(`/orders/`).once('value', (snap) => {
+      let data = snap.val();
+      if (data)
+        this.setState({ orders: Object.values(data) });
     })
   }
   selectDesign = (image) => {
@@ -46,6 +56,7 @@ export default class PlaceOrder extends Component {
     }
   }
   measurements = (userMeasurements) => {
+    firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).update({ measurements: userMeasurements })
     this.setState({ measurements: userMeasurements })
   }
   checkImage = (image) => {
@@ -72,12 +83,24 @@ export default class PlaceOrder extends Component {
       orderBy: firebase.auth().currentUser.email,
       accepted: false,
       rejected: false,
-      user: this.state.user
+      user: this.state.user,
+      orderId: `candsorder#${this.state.orders.length}`
 
     }).then((response) => {
       // alert(response)
       // console.log(response.key)
       firebase.database().ref(`/orders/${response.key}/`).update({ key: response.key })
+      firebase.database().ref(`/users/${firebase.auth().currentUser.uid}/myorders/${response.key}`).set({
+        info,
+        photo: image,
+        measurements,
+        orderBy: firebase.auth().currentUser.email,
+        accepted: false,
+        rejected: false,
+        user: this.state.user,
+        orderId: `candsorder#${this.state.orders.length}`,
+        key: response.key
+      })
       let tokens = []
       firebase.database().ref('/users').once("value", (snap) => {
         let data = snap.val();
