@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, ImageBackground, FlatList, Dimensions, TouchableOpacity, Modal, Image,TextInput,Button } from 'react-native';
+import { Platform, StyleSheet, Text, View, ImageBackground, FlatList, Dimensions, TouchableOpacity, Modal, Image, TextInput, Button } from 'react-native';
 import firebase from 'react-native-firebase';
 const { width, height } = Dimensions.get('window');
 
@@ -37,14 +37,14 @@ export default class MyOrders extends React.Component {
 
     }
 
-sendFeedback = ()=>{
-    firebase.database().ref(`users/${firebase.auth().currentUser.uid}/myorders/${this.state.order.key}`).update({
-        feedBack:this.state.feedBack
-    })
-    firebase.database().ref(`orders/${this.state.order.key}`).update({
-        feedBack:this.state.feedBack
-    })
-}
+    sendFeedback = () => {
+        firebase.database().ref(`users/${firebase.auth().currentUser.uid}/myorders/${this.state.order.key}`).update({
+            feedBack: this.state.feedBack
+        })
+        firebase.database().ref(`orders/${this.state.order.key}`).update({
+            feedBack: this.state.feedBack
+        })
+    }
     render() {
 
         return (
@@ -60,6 +60,7 @@ sendFeedback = ()=>{
                             <Image
                                 source={{ uri: this.state.order.photo }}
                                 style={{ height: "100%", width: "100%" }}
+                                resizeMode="contain"
                             />
                         </View>
                         <View style={{ flexDirection: "row", justifyContent: "space-between", width }} >
@@ -74,6 +75,8 @@ sendFeedback = ()=>{
                                 <Text style={{ color: "white", fontSize: 18 }} >Status: {this.state.order.rejected ? "Rejected" : (this.state.order.completed) ?
                                     "Completed" : this.state.order.accepted ? "Accepted" : "Pending"
                                 }</Text>
+                                <Text style={{ color: "white", fontSize: 18 }} >Amount: {this.state.order.price}
+                                </Text>
                             </View>
                         </View>
                         <Text style={{ color: "white", paddingLeft: 5, fontSize: 18, }} >Measurements</Text>
@@ -94,7 +97,7 @@ sendFeedback = ()=>{
                             <Text style={{ color: "white", fontSize: 18 }} >Info</Text>
                             <Text style={{ color: "white", paddingLeft: 10, }} >{this.state.order.info}</Text>
                         </View>
-                        {(!this.state.order.feedBack)&& this.state.order.completed && <View style={{marginBottom:10}} >
+                        {(!this.state.order.feedBack) && this.state.order.completed && <View style={{ marginBottom: 10 }} >
                             <TextInput style={styles.messagebox}
                                 multiline={true}
                                 numberOfLines={5}
@@ -157,6 +160,6 @@ const styles = StyleSheet.create({
         borderColor: 'grey',
         color: "#c4c633",
         fontSize: 18,
-        marginBottom:5
-      }
+        marginBottom: 5
+    }
 });

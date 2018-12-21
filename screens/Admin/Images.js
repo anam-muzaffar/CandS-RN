@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, Dimensions, Image, TouchableOpacity, ImageBackground, ActivityIndicator, Modal } from 'react-native';
+import { Text, View, FlatList, Dimensions, Image, TouchableOpacity, ImageBackground, ActivityIndicator, Modal, TextInput } from 'react-native';
 import firebase from 'react-native-firebase';
 import ImagePicker from 'react-native-image-picker';
 const options = {
@@ -19,7 +19,9 @@ export default class Images extends Component {
             ],
             index: null,
             showModal: false,
-            category: ''
+            category: '',
+            name: "",
+            price: ""
         }
 
         firebase.database().ref("/images").on('value', (snap) => {
@@ -33,9 +35,15 @@ export default class Images extends Component {
         })
     }
     selectCategory = (category) => {
-        this.setState({ category, showModal: false }, () => {
-            this.uploadImage()
-        })
+        if (this.state.name && this.state.price) {
+
+            this.setState({ category, showModal: false }, () => {
+                this.uploadImage()
+            })
+        }
+        else {
+            alert("Fill all fields");
+        }
     }
     deleteImage = (imageUrl, index) => {
         let imageName = imageUrl.split("images%2F")[1].split("?")[0]
@@ -76,21 +84,23 @@ export default class Images extends Component {
                 });
             } else {
                 let index = this.state.index
-                let date = new Date().getTime();
+                let date = this.state.name;
                 firebase.storage().ref(`/images/CandS${date}`).putFile(response.uri).then(() => {
                     firebase.storage().ref(`/images/CandS${date}`).getDownloadURL().then((url) => {
                         let oldArray = this.state.images.slice(0, -1);
                         if (oldArray.length) {
-                            oldArray.splice(index, 1, { uri: url, category: this.state.category })
+                            oldArray.splice(index, 1, { uri: url, category: this.state.category, name: this.state.name, price: this.state.price })
                         }
                         else {
-                            oldArray = [{ uri: url, category: this.state.category }]
+                            oldArray = [{ uri: url, category: this.state.category, name: this.state.name, price: this.state.price }]
                         }
                         firebase.database().ref('/images').set(
                             oldArray
                         ).then(() => {
                             this.setState({
                                 index: null,
+                                name: "",
+                                price: ""
                             });
                         }).catch(() => {
                             this.setState({
@@ -116,6 +126,38 @@ export default class Images extends Component {
                 <Modal transparent visible={this.state.showModal} onRequestClose={() => this.setState({ showModal: false, index: null })} >
                     <TouchableOpacity onPress={() => this.setState({ showModal: false, index: null })} style={{ height, width, backgroundColor: "rgba(0,0,0,0.2)", justifyContent: "center", alignItems: "center" }} >
                         <View style={{ height: height / 2, width: width / 1.1, justifyContent: "space-around", alignItems: "center", backgroundColor: "white" }} >
+                            <TextInput style={{
+                                width: "90%",
+                                height: 40,
+                                borderWidth: 2,
+                                borderColor: 'grey',
+                                color: "#c4c633",
+                                fontSize: 18
+                            }}
+                                placeholder="Name"
+                                placeholderTextColor="#c4c633"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                value={this.state.name}
+                                onChangeText={(name) => this.setState({ name })}
+                            />
+                            <TextInput style={{
+                                width: "90%",
+                                height: 40,
+                                borderWidth: 2,
+                                marginTop: 5,
+                                borderColor: 'grey',
+                                color: "#c4c633",
+                                fontSize: 18
+                            }}
+                                value={this.state.price}
+                                placeholder="Price"
+                                keyboardType="number-pad"
+                                placeholderTextColor="#c4c633"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                onChangeText={(price) => this.setState({ price })}
+                            />
                             <Text style={{ color: "black", fontSize: 17 }} >Choose a category</Text>
                             <TouchableOpacity style={{ width: "100%", paddingLeft: 10, height: height / 14, justifyContent: "center", borderBottomColor: "lightgray", borderBottomWidth: 1 }} onPress={() => this.selectCategory('summer')} >
                                 <Text>Summer</Text>
@@ -141,7 +183,7 @@ export default class Images extends Component {
                     contentContainerStyle={{ justifyContent: "space-around", flexWrap: "wrap", width, flexDirection: "row" }}
                     renderItem={({ item, index }) => {
                         return (
-                            <TouchableOpacity onPress={() => this.setState({ showModal: true, index })} style={{ height: width / 2.5, width: width / 2.5, justifyContent: "space-between", alignItems: "center", margin: 10 }} >
+                            <TouchableOpacity onPress={() => this.setState({ showModal: true, index, name: item.name, price: item.price })} style={{ height: width / 2.5, width: width / 2.5, justifyContent: "space-between", alignItems: "center", margin: 10 }} >
                                 {index !== this.state.images.length - 1 ? <View style={{ position: "absolute", alignSelf: "flex-end", zIndex: 100, top: -15 }} >
                                     <TouchableOpacity onPress={() => {
                                         this.deleteImage(item.uri, index)

@@ -19,7 +19,8 @@ export default class PlaceOrder extends Component {
       info: "",
       measurements: {},
       user: {},
-      orders: []
+      orders: [],
+      price: ""
     }
 
     firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).once('value', (snap) => {
@@ -37,10 +38,10 @@ export default class PlaceOrder extends Component {
         this.setState({ orders: Object.values(data) });
     })
   }
-  selectDesign = (image) => {
+  selectDesign = (image, price) => {
     if (image) {
       // alert(image)
-      this.setState({ photo: image })
+      this.setState({ photo: image, price: price || 500 })
     }
     else {
       ImagePicker.showImagePicker(options, (response) => {
@@ -50,7 +51,7 @@ export default class PlaceOrder extends Component {
           console.log('ImagePicker Error: ', response.error);
         } else {
           console.log(response)
-          this.setState({ photo: response.uri })
+          this.setState({ photo: response.uri, price: 500 })
         }
       });
     }
@@ -74,7 +75,7 @@ export default class PlaceOrder extends Component {
   }
   uploadDataAndSendNotification = (image) => {
     // let { info, measurements } = this.state;
-    let { photo, info, measurements } = this.state;
+    let { photo, info, measurements, price } = this.state;
 
     firebase.database().ref("/orders").push({
       info,
@@ -84,7 +85,8 @@ export default class PlaceOrder extends Component {
       accepted: false,
       rejected: false,
       user: this.state.user,
-      orderId: `candsorder#${this.state.orders.length}`
+      orderId: `candsorder#${this.state.orders.length}`,
+      price
 
     }).then((response) => {
       // alert(response)
@@ -99,7 +101,8 @@ export default class PlaceOrder extends Component {
         rejected: false,
         user: this.state.user,
         orderId: `candsorder#${this.state.orders.length}`,
-        key: response.key
+        key: response.key,
+        price
       })
       let tokens = []
       firebase.database().ref('/users').once("value", (snap) => {
@@ -122,7 +125,8 @@ export default class PlaceOrder extends Component {
               orderBy: firebase.auth().currentUser.email,
               accepted: "false",
               rejected: "false",
-              key: response.key
+              key: response.key,
+              price
             },
             user: this.state.user
           }),
@@ -179,7 +183,8 @@ export default class PlaceOrder extends Component {
             style={{ height: 50, width: 50 }}
           />
           <View style={{ paddingTop: 30 }} />
-
+          <Text style={{ color: "white", fontSize: 18 }} >Total:{this.state.price}</Text>
+          <View style={{ paddingTop: 10 }} />
           <Button
             title="Submit Order"
             color="#DAA520"

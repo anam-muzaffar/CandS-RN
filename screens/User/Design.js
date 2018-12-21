@@ -62,7 +62,7 @@ export default class Home extends React.Component {
                         {this.state.summerArray.length ? this.state.summerArray.map((image, index) => {
                             return (
                                 <TouchableOpacity onPress={() => {
-                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
+                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri,image.price);
                                     this.props.navigation.goBack()
                                 }}
                                     style={this.state.size}
@@ -71,10 +71,12 @@ export default class Home extends React.Component {
                                         style={{ height: "100%", width: "100%" }}
                                         source={{ uri: image.uri }}
                                         // resizeMode="center"
-                                        resizeMode="cover"
+                                        resizeMode="contain"
 
                                     />
                                     <Text>{index + 1}</Text>
+                                    <Text style={{ color: "white", fontSize: 18, position: "absolute", left: 12, top: (height / 5) / 1.5 }} >Name {image.name}</Text>
+                                    <Text style={{ color: "white", fontSize: 18, position: "absolute", left: 12, top: (height / 5) / 2 }} >Price {image.price}</Text>
                                 </TouchableOpacity>
                             )
                         }) : <View />}
@@ -142,7 +144,7 @@ export default class Home extends React.Component {
                         {this.state.winterArray.length ? this.state.winterArray.map((image, index) => {
                             return (
                                 <TouchableOpacity onPress={() => {
-                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
+                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri,image.price);
                                     this.props.navigation.goBack()
                                 }}
                                     style={this.state.size}
@@ -151,9 +153,12 @@ export default class Home extends React.Component {
                                         style={{ height: "100%", width: "100%" }}
                                         source={{ uri: image.uri }}
 
-                                        resizeMode="cover"
+                                        resizeMode="contain"
                                     />
                                     <Text>{index + 1}</Text>
+                                    <Text style={{ color: "white", fontSize: 18, position: "absolute", left: 12, top: (height / 5) / 1.5 }} >Name {image.name}</Text>
+                                    <Text style={{ color: "white", fontSize: 18, position: "absolute", left: 12, top: (height / 5) / 2 }} >Price {image.price}</Text>
+
                                 </TouchableOpacity>
                             )
                         }) : <View />}
@@ -221,7 +226,7 @@ export default class Home extends React.Component {
                         {this.state.springArray.length ? this.state.springArray.map((image, index) => {
                             return (
                                 <TouchableOpacity onPress={() => {
-                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
+                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri,image.price);
                                     this.props.navigation.goBack()
                                 }}
                                     style={this.state.size}
@@ -229,9 +234,11 @@ export default class Home extends React.Component {
                                     <Image
                                         style={{ height: "100%", width: "100%" }}
                                         source={{ uri: image.uri }}
-                                        resizeMode="cover"
+                                        resizeMode="contain"
                                     />
                                     <Text>{index + 1}</Text>
+                                    <Text style={{ color: "white", fontSize: 18, position: "absolute", left: 12, top: (height / 5) / 1.5 }} >Name {image.name}</Text>
+                                    <Text style={{ color: "white", fontSize: 18, position: "absolute", left: 12, top: (height / 5) / 2 }} >Price {image.price}</Text>
                                 </TouchableOpacity>
                             )
                         }) : <View />}
@@ -288,7 +295,7 @@ export default class Home extends React.Component {
 
 
                 <View style={{ paddingTop: 30 }} />
-                <View style={{ flex: 2 }} onLayout={this._onLayoutDidChange}>
+                <View style={{ flex: 2,marginBottom:50 }} onLayout={this._onLayoutDidChange}>
                     <Text style={{ color: 'yellow', textAlign: 'center', fontSize: 20 }}>Autumn Season</Text>
 
                     <Carousel
@@ -300,7 +307,7 @@ export default class Home extends React.Component {
                         {this.state.autumnArray.length ? this.state.autumnArray.map((image, index) => {
                             return (
                                 <TouchableOpacity onPress={() => {
-                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri);
+                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri,image.price);
                                     this.props.navigation.goBack()
                                 }}
                                     style={this.state.size}
@@ -308,9 +315,11 @@ export default class Home extends React.Component {
                                     <Image
                                         style={{ height: "100%", width: "100%" }}
                                         source={{ uri: image.uri }}
-                                        resizeMode="cover"
+                                        resizeMode="contain"
                                     />
                                     <Text>{index + 1}</Text>
+                                    <Text style={{ color: "white", fontSize: 18, position: "absolute", left: 12, top: (height / 5) / 1.5 }} >Name {image.name}</Text>
+                                    <Text style={{ color: "white", fontSize: 18, position: "absolute", left: 12, top: (height / 5) / 2 }} >Price {image.price}</Text>
                                 </TouchableOpacity>
                             )
                         }) : <View />}
