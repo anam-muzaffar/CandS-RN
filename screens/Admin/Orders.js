@@ -93,7 +93,7 @@ export default class Orders extends Component {
                     )
                   })
                 }
-
+        
               </View>
               <View style={{ marginBottom: 10, padding: 10 }} >
                 <Text style={{ color: "white", fontSize: 18 }} >Info</Text>

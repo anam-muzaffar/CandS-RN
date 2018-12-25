@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, TextInput, ImageBackground, Button, Image } from 'react-native';
+import { Platform, StyleSheet, Text, View, TextInput, ImageBackground, Button, Image, ScrollView } from 'react-native';
 import firebase from 'react-native-firebase';
 import ImagePicker from 'react-native-image-picker';
 
@@ -20,7 +20,8 @@ export default class PlaceOrder extends Component {
       measurements: {},
       user: {},
       orders: [],
-      price: ""
+      price: "",
+      address: ""
     }
 
     firebase.database().ref(`/users/${firebase.auth().currentUser.uid}`).once('value', (snap) => {
@@ -75,7 +76,7 @@ export default class PlaceOrder extends Component {
   }
   uploadDataAndSendNotification = (image) => {
     // let { info, measurements } = this.state;
-    let { photo, info, measurements, price } = this.state;
+    let { photo, info, measurements, price, address } = this.state;
 
     firebase.database().ref("/orders").push({
       info,
@@ -86,7 +87,8 @@ export default class PlaceOrder extends Component {
       rejected: false,
       user: this.state.user,
       orderId: `candsorder#${this.state.orders.length}`,
-      price
+      price,
+      address
 
     }).then((response) => {
       // alert(response)
@@ -102,7 +104,8 @@ export default class PlaceOrder extends Component {
         user: this.state.user,
         orderId: `candsorder#${this.state.orders.length}`,
         key: response.key,
-        price
+        price,
+        address
       })
       let tokens = []
       firebase.database().ref('/users').once("value", (snap) => {
@@ -145,80 +148,91 @@ export default class PlaceOrder extends Component {
   }
   render() {
     return (
-      <ImageBackground source={require("../../assets/bckgrnd.png")} style={{ flex: 1 }}>
-        <View style={styles.page}>
-          <Text style={styles.Contact}> ORDER HERE </Text>
-          <View style={{ paddingTop: 25 }} />
+      <ScrollView>
+        <ImageBackground source={require("../../assets/bckgrnd.png")} style={{ flex: 1 }}>
+          <View style={styles.page}>
+            <Text style={styles.Contact}> ORDER HERE </Text>
+            <View style={{ paddingTop: 25 }} />
 
-          <Button
-            title={`Select Designs   ${this.state.photo ? "" : "(Required)"}`}
-            color="#DAA520"
-            textAlign="center"
+            <Button
+              title={`Select Designs   ${this.state.photo ? "" : "(Required)"}`}
+              color="#DAA520"
+              textAlign="center"
 
-            onPress={() => this.props.navigation.navigate('Design', { selectDesign: this.selectDesign })}
-          />
+              onPress={() => this.props.navigation.navigate('Design', { selectDesign: this.selectDesign })}
+            />
 
-          <View style={{ paddingTop: 40 }} />
+            <View style={{ paddingTop: 40 }} />
 
-          <Button
-            title={`Fulfill Measurements   ${Object.keys(this.state.measurements).length == 12 ? "" : "(Required)"}`}
-            color="#DAA520"
-            textAlign="center"
-            onPress={() => this.props.navigation.navigate('Measurement', { measurements: this.measurements, userMeasurements: this.state.measurements })}
-          />
+            <Button
+              title={`Fulfill Measurements   ${Object.keys(this.state.measurements).length == 12 ? "" : "(Required)"}`}
+              color="#DAA520"
+              textAlign="center"
+              onPress={() => this.props.navigation.navigate('Measurement', { measurements: this.measurements, userMeasurements: this.state.measurements })}
+            />
 
-          <View style={{ paddingTop: 40 }} />
+            <View style={{ paddingTop: 40 }} />
 
-          <Text style={styles.Message}> Additional Note </Text>
+            <Text style={styles.Message}> Additional Note </Text>
 
-          <TextInput style={styles.messagebox}
-            multiline={true}
-            numberOfLines={7}
-            onChangeText={(info) => this.setState({ info })}
-          />
-          <View style={{ paddingTop: 10 }} />
+            <TextInput style={styles.messagebox}
+              multiline={true}
+              numberOfLines={7}
+              onChangeText={(info) => this.setState({ info })}
+            />
+            <View style={{ paddingTop: 40 }} />
 
-          <Image
-            source={{ uri: this.state.photo }}
-            style={{ height: 50, width: 50 }}
-          />
-          <View style={{ paddingTop: 30 }} />
-          <Text style={{ color: "white", fontSize: 18 }} >Total:{this.state.price}</Text>
-          <View style={{ paddingTop: 10 }} />
-          <Button
-            title="Submit Order"
-            color="#DAA520"
+            <Text style={styles.Message}> Address </Text>
 
-            textAlign="center"
-            disabled={!(this.state.photo
-              && (Object.keys(this.state.measurements).length == 12)
-            )
-            }
-            onPress={() => {
-              this.checkImage(this.state.photo)
-            }}
-          />
+            <TextInput style={styles.messagebox}
+              multiline={true}
+              numberOfLines={4}
+              onChangeText={(address) => this.setState({ address })}
+            />
+            <View style={{ paddingTop: 10 }} />
+
+            <Image
+              source={{ uri: this.state.photo }}
+              style={{ height: 50, width: 50 }}
+            />
+            <View style={{ paddingTop: 30 }} />
+            <Text style={{ color: "white", fontSize: 18 }} >Total:{this.state.price}</Text>
+            <View style={{ paddingTop: 10 }} />
+            <Button
+              title="Submit Order"
+              color="#DAA520"
+
+              textAlign="center"
+              disabled={!(this.state.photo
+                && (Object.keys(this.state.measurements).length == 12) && this.state.address.length>10
+              )
+              }
+              onPress={() => {
+                this.checkImage(this.state.photo)
+              }}
+            />
 
 
-          <View style={{ paddingTop: 30 }} />
-          <Button
-            title="Custom Image"
-            color="#DAA520"
-            textAlign="center"
-            onPress={() => this.selectDesign()}
-          />
-          <View style={{ paddingTop: 30 }} />
+            <View style={{ paddingTop: 30 }} />
+            <Button
+              title="Custom Image"
+              color="#DAA520"
+              textAlign="center"
+              onPress={() => this.selectDesign()}
+            />
+            <View style={{ paddingTop: 30 }} />
 
-          <Button
-            title="Cancel"
-            color="#DAA520"
-            textAlign="center"
-            onPress={() => this.props.navigation.goBack()}
-          />
+            <Button
+              title="Cancel"
+              color="#DAA520"
+              textAlign="center"
+              onPress={() => this.props.navigation.goBack()}
+            />
 
-        </View>
+          </View>
 
-      </ImageBackground>
+        </ImageBackground>
+      </ScrollView>
     );
   }
 }

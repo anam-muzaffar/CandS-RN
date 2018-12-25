@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Image, StyleSheet, Text, View, TextInput, Button, Linking, Alert, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
+import { ScrollView, Image, StyleSheet, Text, View, TextInput, Button, Linking, Alert, ImageBackground, Dimensions, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import Carousel from 'react-native-looped-carousel';
 import firebase from 'react-native-firebase';
 const { width, height } = Dimensions.get('window');
@@ -13,7 +13,9 @@ export default class Home extends React.Component {
             summerArray: [],
             winterArray: [],
             springArray: [],
-            autumnArray: []
+            autumnArray: [],
+            selectedImage: "",
+            showImage:false,
         };
         firebase.database().ref("/images").on('value', (snap) => {
             let data = snap.val();
@@ -49,7 +51,36 @@ export default class Home extends React.Component {
         return (
             <ImageBackground source={require("../../assets/bckgrnd.png")} style={{ flex: 1 }}>
                 <View style={{ paddingTop: 15 }} />
+                <Modal
+                    visible={this.state.showImage}
+                    onRequestClose={() => this.setState({ selectedImage: "",showImage:false })}
 
+                >
+                    <View style={{ height, width,backgroundColor:"black",alignItems:"center",justifyContent:"center" }} >
+                    
+
+                        <View style={{ height: height / 1.2, width: width / 1.2 }} >
+                            <Image source={{ uri: this.state.selectedImage.uri }} style={{ height: "100%", width: "100%" }}
+                                resizeMode="contain"
+                                
+                                />
+                        </View>
+                        <View style={{ position: "absolute", width,bottom:40 }} >
+                            <Button
+                                title="Select Image"
+                                color="#DAA520"
+                                onPress={() => {
+                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(this.state.selectedImage.uri, this.state.selectedImage.price);
+                                    this.props.navigation.goBack()
+                                    
+                                    
+                                }}
+                                />
+
+                        </View>
+                                
+                    </View>
+                </Modal>
                 <View style={{ flex: 2 }} onLayout={this._onLayoutDidChange}>
                     <Text style={{ color: 'yellow', textAlign: 'center', fontSize: 20 }}>Summer Season</Text>
                     <Carousel
@@ -62,8 +93,9 @@ export default class Home extends React.Component {
                         {this.state.summerArray.length ? this.state.summerArray.map((image, index) => {
                             return (
                                 <TouchableOpacity onPress={() => {
-                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri,image.price);
-                                    this.props.navigation.goBack()
+                                    // this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri, image.price);
+                                    // this.props.navigation.goBack()
+                                    this.setState({showImage:true,selectedImage:image})
                                 }}
                                     style={this.state.size}
                                 >
@@ -144,8 +176,9 @@ export default class Home extends React.Component {
                         {this.state.winterArray.length ? this.state.winterArray.map((image, index) => {
                             return (
                                 <TouchableOpacity onPress={() => {
-                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri,image.price);
-                                    this.props.navigation.goBack()
+                                    // this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri, image.price);
+                                    // this.props.navigation.goBack()
+                                    this.setState({showImage:true,selectedImage:image})
                                 }}
                                     style={this.state.size}
                                 >
@@ -226,8 +259,9 @@ export default class Home extends React.Component {
                         {this.state.springArray.length ? this.state.springArray.map((image, index) => {
                             return (
                                 <TouchableOpacity onPress={() => {
-                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri,image.price);
-                                    this.props.navigation.goBack()
+                                    // this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri, image.price);
+                                    // this.props.navigation.goBack()
+                                    this.setState({showImage:true,selectedImage:image})
                                 }}
                                     style={this.state.size}
                                 >
@@ -295,7 +329,7 @@ export default class Home extends React.Component {
 
 
                 <View style={{ paddingTop: 30 }} />
-                <View style={{ flex: 2,marginBottom:50 }} onLayout={this._onLayoutDidChange}>
+                <View style={{ flex: 2, marginBottom: 50 }} onLayout={this._onLayoutDidChange}>
                     <Text style={{ color: 'yellow', textAlign: 'center', fontSize: 20 }}>Autumn Season</Text>
 
                     <Carousel
@@ -307,8 +341,9 @@ export default class Home extends React.Component {
                         {this.state.autumnArray.length ? this.state.autumnArray.map((image, index) => {
                             return (
                                 <TouchableOpacity onPress={() => {
-                                    this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri,image.price);
-                                    this.props.navigation.goBack()
+                                    // this.props.navigation.state.params && this.props.navigation.state.params.selectDesign(image.uri, image.price);
+                                    // this.props.navigation.goBack()
+                                    this.setState({showImage:true,selectedImage:image})
                                 }}
                                     style={this.state.size}
                                 >
