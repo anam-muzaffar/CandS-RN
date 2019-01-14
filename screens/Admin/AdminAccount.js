@@ -1,8 +1,22 @@
 import * as React from 'react';
 import { ImageBackground, ScrollView, StyleSheet, Text, View, TextInput, Button, Linking, Alert } from 'react-native';
+import firebase from 'react-native-firebase';
 
 //picture,name,email,contact,address1, address 2,change password
 export default class AdminAccount extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={
+            name:"",
+            email:""
+        }
+        firebase.database().ref(`/users/${firebase.auth().currentUser.uid}/`).once('value',(snap)=>{
+            let data=snap.val();
+            if(data){
+                this.setState({name:data.name,email:data.email})
+            }
+        })
+    }
 render() {
 return (
 <ImageBackground source={require("../../assets/bckgrnd.png")} style={{flex:1}}>
@@ -33,6 +47,7 @@ color="#DAA520"/>
 placeholder="Joey"
 autoCapitalize="none"
 autoCorrect={false}
+value={this.state.name}
 />
 </View>
 </View>
@@ -48,6 +63,8 @@ placeholder="example@cands.com"
 keyboardType="email-address"
 autoCapitalize="none"
 autoCorrect={false}
+editable={false}
+value={this.state.email}
 />
 </View>
 </View>
@@ -122,7 +139,7 @@ textAlign:"center",
 
 inputbox:{
 width: 150,
-height: 35,
+height: 40,
 borderWidth: 2,
 borderColor: 'grey',
 color: "#c4c633",

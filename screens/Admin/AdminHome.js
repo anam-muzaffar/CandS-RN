@@ -25,13 +25,13 @@ export default class AdminHome extends Component<Props> {
           />
           <View style={{ paddingTop: 55 }} />
 
-          <Button
+          {/* <Button
             title="Update Designs"
             color="#DAA520"
             style={styles.button}
             onPress={() => this.props.navigation.navigate('UpdateDesigns')}
 
-          />
+          /> */}
           <View style={{ paddingTop: 55 }} />
           <Button
             title="My Account"

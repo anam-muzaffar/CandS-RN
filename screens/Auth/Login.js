@@ -123,6 +123,7 @@ export default class Login extends React.Component {
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
+            placeholderTextColor="#DAA520"
             onChangeText={(email) => this.setState({ email })}
           />
 
@@ -133,6 +134,7 @@ export default class Login extends React.Component {
             secureTextEntry={true}
             autoCapitalize="none"
             autoCorrect={false}
+            placeholderTextColor="#DAA520"
             onChangeText={(password) => this.setState({ password })}
 
           />
@@ -206,7 +208,7 @@ const styles = StyleSheet.create({
 
   inputbox: {
     width: 350,
-    height: 35,
+    height: 40,
     borderWidth: 2,
     borderColor: 'grey',
     color: "#c4c633",

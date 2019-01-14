@@ -31,7 +31,7 @@ export default class Measurement extends React.Component {
 
           <View style={styles.grid}>
             <View style={styles.sidebox}>
-              <TextInput value={this.state.userMeasurements.chest} keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(chest) => this.setMeasurements({chest})} />
+              <TextInput  value={this.state.userMeasurements.chest} keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(chest) => this.setMeasurements({chest})} />
             </View>
             <View style={styles.sidebox}>
               <TextInput value={this.state.userMeasurements.ribs} keyboardType="numeric" maxLength={3} style={styles.inputbox} onChangeText={(ribs) => this.setMeasurements({ribs})} />
@@ -172,10 +172,10 @@ const styles = StyleSheet.create({
 
   inputbox: {
     width: 100,
-    height: 25,
+    height: 40,
     borderWidth: 2,
     borderColor: 'grey',
-    color: "#c4c633",
+    color: "#DAA520",
     fontSize: 18
   },
 
