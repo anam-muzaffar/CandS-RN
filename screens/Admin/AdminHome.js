@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, ImageBackground } from 'react-native';
+import { CSButton } from '../../components/CSButton';
 
 export default class AdminHome extends Component<Props> {
   render() {
@@ -16,11 +17,12 @@ export default class AdminHome extends Component<Props> {
 
           <View style={{ paddingTop: 55 }} />
 
-          <Button
+          <CSButton
             title="Orders Received"
             color="#DAA520"
             style={styles.button}
             onPress={() => this.props.navigation.navigate('Orders')}
+            bWidth={1}
 
           />
           <View style={{ paddingTop: 55 }} />
@@ -33,26 +35,26 @@ export default class AdminHome extends Component<Props> {
 
           /> */}
           <View style={{ paddingTop: 55 }} />
-          <Button
+          <CSButton
             title="My Account"
             color="#DAA520"
             style={styles.button}
             onPress={() => this.props.navigation.navigate('AdminAccount')}
-
+          bWidth={1}
           />
           <View style={{ paddingTop: 55 }} />
-          <Button
+          <CSButton
             title="Sign out"
             color="#DAA520"
             onPress={() => this.props.navigation.navigate('Login')}
 
           />
           <View style={{ paddingTop: 55 }} />
-          <Button
+          <CSButton
             title="Upload Images"
             color="#DAA520"
             onPress={() => this.props.navigation.navigate('Images')}
-
+            bWidth={1}
           />
         </View>
       </ImageBackground>

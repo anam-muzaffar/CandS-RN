@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, TextInput, ImageBackground, Button, Image, ScrollView } from 'react-native';
 import firebase from 'react-native-firebase';
 import ImagePicker from 'react-native-image-picker';
+import { CSButton } from '../../components/CSButton';
 
 const options = {
   title: 'Select Image',
@@ -15,7 +16,7 @@ export default class PlaceOrder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      photo: null,
+      photo: "",
       info: "",
       measurements: {},
       user: {},
@@ -154,7 +155,7 @@ export default class PlaceOrder extends Component {
             <Text style={styles.Contact}> ORDER HERE </Text>
             <View style={{ paddingTop: 25 }} />
 
-            <Button
+            <CSButton
               title={`Select Designs   ${this.state.photo ? "" : "(Required)"}`}
               color="#DAA520"
               textAlign="center"
@@ -164,8 +165,8 @@ export default class PlaceOrder extends Component {
 
             <View style={{ paddingTop: 40 }} />
 
-            <Button
-              title={`Fulfill Measurements   ${Object.keys(this.state.measurements).length == 12 ? "" : "(Required)"}`}
+            <CSButton
+              title={ `Fulfill Measurements   ${Object.keys(this.state.measurements).length == 12 ? "" : "(Required)"}`}
               color="#DAA520"
               textAlign="center"
               onPress={() => this.props.navigation.navigate('Measurement', { measurements: this.measurements, userMeasurements: this.state.measurements })}
@@ -198,9 +199,9 @@ export default class PlaceOrder extends Component {
             <View style={{ paddingTop: 30 }} />
             <Text style={{ color: "white", fontSize: 18 }} >Total:{this.state.price}</Text>
             <View style={{ paddingTop: 10 }} />
-            <Button
+            <CSButton
               title="Submit Order"
-              color="#DAA520"
+              color= "#DAA520"
 
               textAlign="center"
               disabled={!(this.state.photo
@@ -214,7 +215,7 @@ export default class PlaceOrder extends Component {
 
 
             <View style={{ paddingTop: 30 }} />
-            <Button
+            <CSButton
               title="Custom Image"
               color="#DAA520"
               textAlign="center"
@@ -222,7 +223,7 @@ export default class PlaceOrder extends Component {
             />
             <View style={{ paddingTop: 30 }} />
 
-            <Button
+            <CSButton
               title="Cancel"
               color="#DAA520"
               textAlign="center"

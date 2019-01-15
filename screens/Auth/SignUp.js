@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ImageBackground, Button, TextInput, ScrollView } from 'react-native';
 import firebase from 'react-native-firebase';
+import { CSButton } from '../../components/CSButton';
 
 
 export default class SignUp extends React.Component {
@@ -120,18 +121,23 @@ export default class SignUp extends React.Component {
 
             <View style={{ paddingTop: 50 }} />
 
-            <Button
+            <CSButton
               title="Sign Up"
               color="#DAA520"
               onPress={() => this.signup()}
+              bHeight={18}
+                bWidth={2.1}
             />
 
             <View style={{ paddingTop: 150 }} />
 
-            <Button
+            <CSButton
               title="Back to Home"
               color="#DAA520"
-              onPress={() => this.props.navigation.goBack()} />
+              onPress={() => this.props.navigation.goBack()}
+              bHeight={18}
+                bWidth={2.1}
+              />
 
           </View>
         </ScrollView>

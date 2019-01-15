@@ -1,6 +1,7 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TextInput,ImageBackground,Button} from 'react-native';
+import { CSButton } from '../../components/CSButton';
 
 
 
@@ -30,7 +31,7 @@ export default class ContactUs extends Component<Props> {
 
        <View style={{paddingTop:15}}/>
 
-        <Button
+        <CSButton
     title="Send"
     color="#DAA520"
     textAlign= "center"

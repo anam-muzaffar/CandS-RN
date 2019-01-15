@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, Image, StyleSheet, Text, View, TextInput, Button, Linking, Alert, ImageBackground, Dimensions, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import Carousel from 'react-native-looped-carousel';
 import firebase from 'react-native-firebase';
+import { CSButton } from '../../components/CSButton';
 const { width, height } = Dimensions.get('window');
 
 export default class Home extends React.Component {
@@ -66,7 +67,7 @@ export default class Home extends React.Component {
                                 />
                         </View>
                         <View style={{ position: "absolute", width,bottom:40 }} >
-                            <Button
+                            <CSButton
                                 title="Select Image"
                                 color="#DAA520"
                                 onPress={() => {
@@ -409,7 +410,7 @@ export default class Home extends React.Component {
 
                     </Carousel>
                 </View>
-                <Button
+                <CSButton
                     title="Go Back"
                     color="#DAA520"
                     onPress={() => this.props.navigation.goBack()}

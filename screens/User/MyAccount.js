@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ImageBackground, ScrollView, StyleSheet, Text, View, TextInput, Button, Linking, Alert, ToastAndroid } from 'react-native';
 import firebase from 'react-native-firebase';
+import { CSButton } from '../../components/CSButton';
 
 //picture,name,email,contact,address1, address 2,change password
 export default class MyAccount extends React.Component {
@@ -59,7 +60,7 @@ export default class MyAccount extends React.Component {
               <Text style={styles.sidetext}> Place Holder </Text>
             </View>
             <View style={styles.sidebox}>
-              <Button
+              <CSButton
                 title='Upload Image'
                 color="#DAA520" />
             </View>
@@ -159,7 +160,7 @@ export default class MyAccount extends React.Component {
 
           <View style={styles.grid}>
             <View style={styles.sidebox}>
-              <Button
+              <CSButton
                 title="Update"
                 color="#DAA520"
                 onPress={() => this.updatePass()}
@@ -176,7 +177,7 @@ export default class MyAccount extends React.Component {
           <View style={{ paddingTop: 25 }} />
 
 
-          <Button
+          <CSButton
             title="Cancel"
             // onPress={this.onSignoutPress}
             color="#DAA520"

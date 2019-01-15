@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ImageBackground, ScrollView, StyleSheet, Text, View, TextInput, Button, Linking, Alert } from 'react-native';
+import { CSButton } from '../../components/CSButton';
 
 //picture,name,email,contact,address1, address 2,change password
 export default class Measurement extends React.Component {
@@ -140,7 +141,7 @@ export default class Measurement extends React.Component {
           </View>
           <View style={{ paddingTop: 15 }} />
           <Text style={styles.sidetext}>Note* All measurements are kept in inches</Text>
-          <Button
+          <CSButton
             title="Submit"
             color="#DAA520"
             onPress={() => {

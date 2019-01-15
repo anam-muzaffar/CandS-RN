@@ -9,6 +9,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, ImageBackground, FlatList, Dimensions, TouchableOpacity, Modal, Image, TextInput, Button } from 'react-native';
 import firebase from 'react-native-firebase';
+import { CSButton } from '../../components/CSButton';
 const { width, height } = Dimensions.get('window');
 
 
@@ -105,7 +106,7 @@ export default class MyOrders extends React.Component {
                                 placeholder="Feed Back"
                                 onChangeText={(feedBack) => this.setState({ feedBack })}
                             />
-                            <Button
+                            <CSButton
                                 title="Send Feedback"
                                 color="#DAA520"
                                 onPress={() => this.sendFeedback()}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ImageBackground, ScrollView, StyleSheet, Text, View, TextInput, Button, Linking, Alert } from 'react-native';
 import firebase from 'react-native-firebase';
+import { CSButton } from '../../components/CSButton';
 
 //picture,name,email,contact,address1, address 2,change password
 export default class AdminAccount extends React.Component {
@@ -31,9 +32,11 @@ return (
 <Text style={styles.sidetext}> Place Holder </Text>
 </View>
 <View style={styles.sidebox}>
-<Button
+<CSButton
 title = 'Upload Image'
-color="#DAA520"/>
+color="#DAA520"
+ bWidth={2.1}
+/>
 </View>
 </View>
 <View style={{paddingTop:65}} />
@@ -90,10 +93,11 @@ secureTextEntry={true}
 
 <View style={styles.grid}>
 <View style={styles.sidebox}>
-<Button
+<CSButton
 title="Update"
 color="#DAA520"
 onPress={() => this.props.navigation.goBack()}
+bWidth={2.1}
 />
 </View>
 <View style={styles.sidebox}>
@@ -107,11 +111,12 @@ secureTextEntry={true}
 <View style ={{paddingTop: 85}} />
 
 
-<Button
+<CSButton
 title="Sign out"
 //onPress={this.onSignoutPress}
 color="#DAA520"
 onPress={() => this.props.navigation.navigate('Login')}
+bWidth={2.1}
 />
 
 </ScrollView>

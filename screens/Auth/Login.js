@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TextInput, ImageBackground, Button } from 'react-native';
 import firebase from 'react-native-firebase';
-
+import { CSButton } from '../../components/CSButton';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -99,7 +99,7 @@ export default class Login extends React.Component {
 
           }
         })
-      }).catch((err)=>{
+      }).catch((err) => {
         alert(err)
       })
     }
@@ -140,10 +140,13 @@ export default class Login extends React.Component {
           />
           <View style={{ paddingTop: 15 }} />
 
-          <Button
+          <CSButton
             title="Login"
             color="#DAA520"
             textAlign="center"
+            bHeight={18}
+            bWidth={2}
+
             onPress={() => this.signin()}
 
 
@@ -163,19 +166,22 @@ export default class Login extends React.Component {
 
           <View style={styles.grid}>
             <View style={styles.sidebox}>
-              <Button
+              <CSButton
                 title="Sign Up"
                 color="#DAA520"
                 onPress={() => this.props.navigation.navigate('SignUp')}
+                bHeight={18}
+                bWidth={2.1}
 
               />
             </View>
             <View style={styles.sidebox}>
-              <Button
+              <CSButton
                 title="Forgot Password?"
                 color="#DAA520"
                 onPress={() => this.props.navigation.navigate('ForgotPassword')}
-
+                bHeight={18}
+                bWidth={2.1}
               />
             </View>
           </View>

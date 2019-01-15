@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ImageBackground, Button, TextInput, ToastAndroid } from 'react-native';
 import firebase from 'react-native-firebase';
+import { CSButton } from '../../components/CSButton';
 
 
 export default class ForgotPassword extends React.Component {
@@ -47,18 +48,22 @@ export default class ForgotPassword extends React.Component {
 
           <View style={{ paddingTop: 50 }} />
 
-          <Button
+          <CSButton
             title="Reset Password"
             color="#DAA520"
             onPress={() => this.sendEmail()}
+            bHeight={18}
+            bWidth={2.1}
           />
 
           <View style={{ paddingTop: 200 }} />
 
-          <Button
+          <CSButton
             title="Back to Home"
             color="#DAA520"
-            onPress={() => this.props.navigation.goBack()} />
+            onPress={() => this.props.navigation.goBack()}
+            bHeight={18}
+            bWidth={2.1} />
 
         </View>
       </ImageBackground>
