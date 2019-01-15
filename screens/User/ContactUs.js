@@ -1,7 +1,8 @@
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput,ImageBackground,Button} from 'react-native';
+import {Platform, StyleSheet, Text, View, TextInput,ImageBackground,Button,Dimensions} from 'react-native';
 import { CSButton } from '../../components/CSButton';
+const {height,width} = Dimensions.get("window")
 
 
 
@@ -52,7 +53,7 @@ export default class ContactUs extends Component<Props> {
 
 const styles = StyleSheet.create({
   inputbox:{
-  width: 355,
+  width: width/1.05,
   height: 35,
   borderWidth: 2,
   borderColor: 'grey',
@@ -84,7 +85,7 @@ Message:{
   color:'yellow'
 },
 messagebox: {
-   width: 355,
+   width: width/1.05,
   height: 150,
   borderWidth: 2,
   borderColor: 'grey',

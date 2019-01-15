@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, TextInput, ImageBackground, Button, Image, ScrollView } from 'react-native';
+import { Platform, StyleSheet, Text, View, TextInput, ImageBackground, Button, Image, ScrollView,Dimensions } from 'react-native';
 import firebase from 'react-native-firebase';
 import ImagePicker from 'react-native-image-picker';
 import { CSButton } from '../../components/CSButton';
+const {height,width} = Dimensions.get("window")
 
 const options = {
   title: 'Select Image',
@@ -159,7 +160,7 @@ export default class PlaceOrder extends Component {
               title={`Select Designs   ${this.state.photo ? "" : "(Required)"}`}
               color="#DAA520"
               textAlign="center"
-
+            bWidth={1.1}
               onPress={() => this.props.navigation.navigate('Design', { selectDesign: this.selectDesign })}
             />
 
@@ -169,6 +170,8 @@ export default class PlaceOrder extends Component {
               title={ `Fulfill Measurements   ${Object.keys(this.state.measurements).length == 12 ? "" : "(Required)"}`}
               color="#DAA520"
               textAlign="center"
+            bWidth={1.1}
+
               onPress={() => this.props.navigation.navigate('Measurement', { measurements: this.measurements, userMeasurements: this.state.measurements })}
             />
 
@@ -202,6 +205,7 @@ export default class PlaceOrder extends Component {
             <CSButton
               title="Submit Order"
               color= "#DAA520"
+              bWidth={1.1}
 
               textAlign="center"
               disabled={!(this.state.photo
@@ -220,6 +224,8 @@ export default class PlaceOrder extends Component {
               color="#DAA520"
               textAlign="center"
               onPress={() => this.selectDesign()}
+            bWidth={1.1}
+
             />
             <View style={{ paddingTop: 30 }} />
 
@@ -228,6 +234,8 @@ export default class PlaceOrder extends Component {
               color="#DAA520"
               textAlign="center"
               onPress={() => this.props.navigation.goBack()}
+            bWidth={1.1}
+              
             />
 
           </View>
@@ -241,12 +249,12 @@ export default class PlaceOrder extends Component {
 const styles = StyleSheet.create({
 
   inputbox: {
-    width: 355,
+    width: width/1.05,
     height: 35,
     borderWidth: 2,
     borderColor: 'grey',
     color: "#c4c633",
-    fontSize: 18
+    fontSize: 18,
   },
   Contact: {
     fontSize: 30,
@@ -260,7 +268,9 @@ const styles = StyleSheet.create({
   },
   page: {
     flex: 1,
-    paddingTop: 5
+    paddingTop: 5,
+    alignItems:"center",
+    paddingBottom:5
   },
   line: {
     fontSize: 15,
@@ -273,7 +283,7 @@ const styles = StyleSheet.create({
     color: 'yellow'
   },
   messagebox: {
-    width: 355,
+    width:width/1.05 ,
     height: 150,
     borderWidth: 2,
     borderColor: 'grey',

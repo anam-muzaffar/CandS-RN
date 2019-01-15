@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ImageBackground, Button, TextInput, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, ImageBackground, Button, TextInput, ScrollView,Dimensions } from 'react-native';
 import firebase from 'react-native-firebase';
 import { CSButton } from '../../components/CSButton';
+const {height,width} = Dimensions.get("window")
 
 
 export default class SignUp extends React.Component {
@@ -129,10 +130,10 @@ export default class SignUp extends React.Component {
                 bWidth={2.1}
             />
 
-            <View style={{ paddingTop: 150 }} />
+            <View style={{ paddingTop: 50 }} />
 
             <CSButton
-              title="Back to Home"
+              title="Back to Signin"
               color="#DAA520"
               onPress={() => this.props.navigation.goBack()}
               bHeight={18}
@@ -148,7 +149,7 @@ export default class SignUp extends React.Component {
 
 const styles = StyleSheet.create({
   inputbox: {
-    width: 350,
+    width: width/1.1,
     height: 40,
     borderWidth: 2,
     borderColor: 'grey',

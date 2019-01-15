@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TextInput, ImageBackground, Button } from 'react-native';
+import { Text, View, StyleSheet, TextInput, ImageBackground, Button,Dimensions } from 'react-native';
 import firebase from 'react-native-firebase';
 import { CSButton } from '../../components/CSButton';
-
+const {height,width} = Dimensions.get("window")
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -110,7 +110,7 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <ImageBackground source={require("../../assets/bckgrnd.png")} style={{ flex: 1 }}>
+      <ImageBackground source={require("../../assets/bckgrnd.png")} style={{ height,width }}>
         <View style={styles.page}>
 
           <Text style={styles.title}>CandS</Text>
@@ -151,7 +151,6 @@ export default class Login extends React.Component {
 
 
           />
-          <View style={{ paddingTop: 45 }} />
 
 
           {/* <Button
@@ -213,12 +212,12 @@ const styles = StyleSheet.create({
   },
 
   inputbox: {
-    width: 350,
+    width: width/1.1,
     height: 40,
     borderWidth: 2,
     borderColor: 'grey',
     color: "#c4c633",
-    fontSize: 18
+    fontSize: 18,
   },
 
   grid: {
